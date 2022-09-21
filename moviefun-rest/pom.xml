@@ -9,7 +9,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tomee.version>9.0.0-M9-SNAPSHOT</tomee.version>
-    <version.shrinkwrap.resolver>2.0.0</version.shrinkwrap.resolver>
   </properties>
   <repositories>
     <repository>
@@ -28,38 +27,6 @@
   <build>
     <finalName>moviefun</finalName>
     <plugins>
-      <plugin>
-        <groupId>com.googlecode.jslint4java</groupId>
-        <artifactId>jslint4java-maven-plugin</artifactId>
-        <version>2.0.5</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.0.24</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <failOnError>true</failOnError>
-          <options>
-            <vars>true</vars>
-            <unparam>true</unparam>
-            <predef>define,require,requirejs,window,Backbone,_,$,Handlebars,APP_CONFIG</predef>
-            <indent>4</indent>
-          </options>
-          <sourceFolders>
-            <sourceFolder>${basedir}/src/main/webapp/app/js</sourceFolder>
-          </sourceFolders>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>lint</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -85,40 +52,8 @@
           <target>11</target>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.tomee.maven</groupId>
-        <artifactId>tomee-maven-plugin</artifactId>
-        <version>${tomee.version}</version>
-        <configuration>
-          <tomeeClassifier>plus</tomeeClassifier>
-          <args>-Xmx512m -XX:PermSize=256m</args>
-          <config>${project.basedir}/src/main/tomee/</config>
-        </configuration>
-      </plugin>
-      
     </plugins>
   </build>
-  <dependencyManagement>
-    <dependencies>
-      <!-- Override dependency resolver with test version. This must go *BEFORE*
-        the Arquillian BOM. -->
-      <dependency>
-        <groupId>org.jboss.shrinkwrap.resolver</groupId>
-        <artifactId>shrinkwrap-resolver-bom</artifactId>
-        <version>${version.shrinkwrap.resolver}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-      <!-- Now pull in our server-based unit testing framework -->
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>1.7.0.Alpha10</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>org.apache.tomee</groupId>
@@ -138,113 +73,5 @@
       <version>${tomee.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.tomee</groupId>
-      <artifactId>tomee-embedded</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-depchain</artifactId>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tomee</groupId>
-      <artifactId>ziplock</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>backbonejs</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>bootstrap</artifactId>
-      <version>3.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>handlebars</artifactId>
-      <version>1.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery</artifactId>
-      <version>2.1.0-1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>json2</artifactId>
-      <version>20110223</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>less</artifactId>
-      <version>1.6.0-1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>requirejs</artifactId>
-      <version>2.1.10</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>requirejs-text</artifactId>
-      <version>2.0.10</version>
-    </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>arquillian-tomee-embedded</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.tomee</groupId>
-          <artifactId>arquillian-tomee-embedded</artifactId>
-          <version>${tomee.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>arquillian-tomee-remote</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.tomee</groupId>
-          <artifactId>arquillian-tomee-remote</artifactId>
-          <version>${tomee.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
-  <!-- This section allows you to configure where to publish libraries for
-  sharing. It is not required and may be deleted. For more information see:
-  http://maven.apache.org/plugins/maven-deploy-plugin/ -->
-  <distributionManagement>
-    <repository>
-      <id>localhost</id>
-      <url>file://${basedir}/target/repo/</url>
-    </repository>
-    <snapshotRepository>
-      <id>localhost</id>
-      <url>file://${basedir}/target/snapshot-repo/</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
