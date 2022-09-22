@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<tomee>
-  <Resource id="HSQLDB Database" type="DataSource">
-    JdbcDriver org.hsqldb.jdbcDriver
-    JdbcUrl jdbc:hsqldb:file:target/db/moviefun
-    UserName sa
-    Password
-  </Resource>
-</tomee>
